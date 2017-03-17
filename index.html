@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>tpl-模板替换工具</title>
+	<link rel="stylesheet" type="text/css" href="css/codemirror.css">
+	<link rel="stylesheet" type="text/css" href="css/theme.css">
+	<style>
+		html, body {
+			padding: 0; margin: 0;
+		}
+		.box {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+		}
+		.editor {
+			width: 25%;
+			height: 100%;
+			float: left;
+			position: relative;
+			border-right: 2px solid #666;
+			box-sizing: border-box;
+		}
+		.editor .CodeMirror {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="editor source"></div>
+		<div class="editor transform"></div>
+		<div class="editor use"></div>
+		<div class="editor target"></div>
+	</div>
+
+	<script src="js/codemirror.js"></script>
+	<script src="js/javascript.js"></script>
+	<script src="js/matchbrakets.js"></script>
+	<script src="js/tpl.js"></script>
+	<script>
+		var source = document.getElementsByClassName('source')[0];
+		var transform = document.getElementsByClassName('transform')[0];
+		var use = document.getElementsByClassName('use')[0];
+		var target = document.getElementsByClassName('target')[0];
+
+
+		var sourceEditor = CodeMirror(source, {
+			value: `<%
+	var arr = [1,2,3,4];	
+%>
+	
+	
+<%for(var i = 0, j = 0; i < arr.length; i++) {%>
+	<li><%=arr[i]%></li>
+<%}%>`,
+			mode:  'javascript',
+			lineNumbers: true,
+			styleActiveLine: true,
+    		matchBrackets: true,
+			theme: 'theme',
+			tabSize: 2,
+			indentWithTabs: true
+		})
+		.on('change', function(editor) {
+			if( editor.timer ) clearTimeout(editor.timer);
+			editor.timer = setTimeout(function() {
+				transformEditor.setValue( tpl(editor.getValue()).toString() )
+			}, 500)
+		})
+
+		var transformEditor = CodeMirror(transform, {
+			value: '',
+			mode:  'javascript',
+			lineNumbers: true,
+			styleActiveLine: true,
+    		matchBrackets: true,
+			theme: 'theme',
+			tabSize: 2,
+			indentWithTabs: true,
+			readOnly: true,
+			cursorHeight: 0
+		});
+
+		var useEditor = CodeMirror(use, {
+			value: '',
+			mode:  'javascript',
+			lineNumbers: true,
+			styleActiveLine: true,
+    		matchBrackets: true,
+			theme: 'theme',
+			tabSize: 2,
+			indentWithTabs: true
+		});
+
+		var targetEditor = CodeMirror(target, {
+			value: '',
+			mode:  'javascript',
+			lineNumbers: true,
+			styleActiveLine: true,
+    		matchBrackets: true,
+			theme: 'theme',
+			tabSize: 2,
+			indentWithTabs: true,
+			readOnly: true,
+			cursorHeight: 0
+		});
+	</script>
+</body>
+</html>

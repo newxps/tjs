@@ -1,0 +1,55 @@
+/**
+ * Pastel On Dark theme ported from ACE editor
+ * @license MIT
+ * @copyright AtomicPages LLC 2014
+ * @author Dennis Thompson, AtomicPages LLC
+ * @version 1.1
+ * @source https://github.com/atomicpages/codemirror-theme-theme
+ */
+
+.cm-s-theme.CodeMirror {
+	background: #2c2827;
+	color: #8F938F;
+	line-height: 1.5;
+}
+.cm-s-theme div.CodeMirror-selected { background: rgba(221,240,255,0.2); }
+.cm-s-theme .CodeMirror-line::selection, .cm-s-theme .CodeMirror-line > span::selection, .cm-s-theme .CodeMirror-line > span > span::selection { background: rgba(221,240,255,0.2); }
+.cm-s-theme .CodeMirror-line::-moz-selection, .cm-s-theme .CodeMirror-line > span::-moz-selection, .cm-s-theme .CodeMirror-line > span > span::-moz-selection { background: rgba(221,240,255,0.2); }
+
+.cm-s-theme .CodeMirror-gutters {
+	background: #34302f;
+	border-right: 1px solid #444;
+	padding: 0 3px;
+}
+.cm-s-theme .CodeMirror-guttermarker { color: white; }
+.cm-s-theme .CodeMirror-guttermarker-subtle { color: #8F938F; }
+.cm-s-theme .CodeMirror-linenumber { color: #8F938F; }
+.cm-s-theme .CodeMirror-cursor { border-left: 1px solid #A7A7A7; }
+.cm-s-theme span.cm-comment { color: #A6C6FF; }
+.cm-s-theme span.cm-atom { color: #DE8E30; }
+.cm-s-theme span.cm-number { color: #a676d6; }
+.cm-s-theme span.cm-property { color: #b55d56; }
+.cm-s-theme span.cm-attribute { color: #a6e22e; }
+.cm-s-theme span.cm-keyword { color: #4e99c1; }
+.cm-s-theme span.cm-variable { color: #AEB2F8; }
+.cm-s-theme span.cm-variable-2 { color: #BEBF55; }
+.cm-s-theme span.cm-variable-3 { color: #DE8E30; }
+
+.cm-s-theme span.cm-string { color: #7d8a9a; }
+.cm-s-theme span.cm-string-2 { color: #7d8a9a; }
+
+.cm-s-theme span.cm-def { color: #b9d875; }
+.cm-s-theme span.cm-bracket { color: #f8f8f2; }
+.cm-s-theme span.cm-tag { color: #C1C144; }
+.cm-s-theme span.cm-link { color: #ae81ff; }
+.cm-s-theme span.cm-qualifier,.cm-s-theme span.cm-builtin { color: #C1C144; }
+.cm-s-theme span.cm-error {
+	background: #757aD8;
+	color: #f8f8f0;
+}
+.cm-s-theme .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.031); }
+.cm-s-theme .CodeMirror-matchingbracket {
+	border: 1px solid rgba(255,255,255,0.25);
+	color: #8F938F !important;
+	margin: -1px -1px 0 -1px;
+}
