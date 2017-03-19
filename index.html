@@ -53,7 +53,9 @@
 	
 	
 <%for(var i = 0, j = 0; i < arr.length; i++) {%>
-	<li><%=arr[i]%></li>
+	<li data-id="<%=arr[i].id%>">
+		<%=arr[i].name%>
+	</li>
 <%}%>`,
 			mode:  'javascript',
 			// lineNumbers: true,
@@ -66,7 +68,11 @@
 		.on('change', function(editor) {
 			if( editor.timer ) clearTimeout(editor.timer);
 			editor.timer = setTimeout(function() {
-				transformEditor.setValue( tpl(editor.getValue()).toString() )
+				try {
+					transformEditor.setValue( tpl(editor.getValue()).toString() )
+				} catch(e) {
+					console.warn('模板转换出错!')
+				}
 			}, 500)
 		})
 
