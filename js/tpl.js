@@ -86,6 +86,7 @@
 	function _reset(str) {
 	    return str.replace(/%#~@(.+?)@~#%/g, function($0, $1) { return strMap[$1] || $0; });
 	}
+	
 	// 待改善: 先replace, 每次提取所有字符串, 用随机编号代替, 放在{}中一一对应, 然后添加换行, 替换各种操作, 最后把字符串换回来
 	function beautify(str) {
 	    var tab = '\t';
