@@ -240,7 +240,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   margin: 0;
   white-space: pre;
   word-wrap: normal;
-  line-height: inherit;
+  line-height: 1.4;
   color: inherit;
   z-index: 2;
   position: relative;

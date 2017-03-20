@@ -68,11 +68,12 @@
 		.on('change', function(editor) {
 			if( editor.timer ) clearTimeout(editor.timer);
 			editor.timer = setTimeout(function() {
-				try {
+				// console.log( tpl(editor.getValue()) )
+				// try {
 					transformEditor.setValue( tpl(editor.getValue()).toString() )
-				} catch(e) {
-					console.warn('模板转换出错!')
-				}
+				// } catch(e) {
+					// console.warn('模板转换出错!')
+				// }
 			}, 500)
 		})
 
