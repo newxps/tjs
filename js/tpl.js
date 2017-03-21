@@ -70,7 +70,7 @@
 		// 一个一个字符遍历, 防止引号中包含定界符或引号 导致的bug
 		while(j < str.length) {
 			if(!isJs) {
-				// 模板
+				// html
 				if(str.charAt(j) === ldc && str.substring(j, j + ld.length) === ld) {
 					isJs = true;
 					frag = escape(str.substring(i, j));
