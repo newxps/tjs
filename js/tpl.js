@@ -60,11 +60,13 @@
 		opt.minify = opt.minify || true;
 		opt.uglify = opt.uglify || false;
 
+		// ld -> left delimiter,  rd -> right delimiter,  ldc -> left delimiter char
 		var ld = opt.ld, rd = opt.rd;
 		var ldc = ld.charAt(0), rdc = rd.charAt(0);
 
 		var i = 0, j = 0, res = '', frag = '';
 
+		// isSq -> is single quote,  isDq -> is double quote
 		var isJs = false, isSq = false, isDq = false
 
 		// 一个一个字符遍历, 防止引号中包含定界符或引号 导致的bug
