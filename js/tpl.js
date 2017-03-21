@@ -40,16 +40,16 @@
 	// 				})
 	// }
 
-	function rmJsComment(str) {
+	function _rmJsComment(str) {
 		return String(str).replace(/\/\/.*?\n/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
 	}
 
-	function encodeHTML(html) {
+	function _encodeHTML(html) {
 		return String(html).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/`/g, '&#96;').replace(/'/g, '&#39;').replace(/"/g, '&quot;')
 	}
 
 	// 对双引号和\n转义
-	function escape(str) {
+	function _es(str) {
 		return String(str).replace(/"/g, '\\"').replace(/\n/g, '\\n');
 	}
 
@@ -75,7 +75,7 @@
 				// html
 				if(str.charAt(j) === ldc && str.substring(j, j + ld.length) === ld) {
 					isJs = true;
-					frag = escape(str.substring(i, j));
+					frag = _es(str.substring(i, j));
 					if(frag) {
 						res += '_res += "' + frag + '";';
 					}
@@ -97,14 +97,14 @@
 					frag = str.substring(i, j);
 					switch( frag.charAt(0) ) {
 						case '=':
-							res += '_res += encodeHTML('+ frag.substring(1).trim() +');';
+							res += '_res += _encodeHTML('+ frag.substring(1).trim() +');';
 							break;
 						case '-':
 							res += '_res += ' + frag.substring(1).trim() + ';';
 							break;
 						default:
 							// js语句,  待大量测试
-							frag = rmJsComment(frag).trim();
+							frag = _rmJsComment(frag).trim();
 							if(['{', '[', '(', ':', ';'].indexOf(frag.substr(-1)) > -1) {
 								res += frag;
 							} else {
@@ -121,7 +121,7 @@
 			j++;
 		}
 
-		frag = escape(str.substring(i, j));
+		frag = _es(str.substring(i, j));
 		if(frag) {
 			res += '_res += "' + frag + '";';
 		}
