@@ -5,6 +5,8 @@
 		global.pretty = factory();
 	}
 })(typeof window !== "undefined" ? window : this, function() {
+
+	// 还有问题, 待完善
 	function saveQuote(str, fn) {
 		var p1 = 0, p2 = 0, a, b, c;
 		var res = '', tmp = '';
@@ -35,11 +37,11 @@
 
 			// 等待记录引号内容
 			while( ~(p2 = str.indexOf(c, p2)) ) {
-				if( str.charAt(p2 - 1) !== '\\' ) {
+				if( str.charAt(p2 - 1) == '\\' && str.charAt(p2 - 2) !== '\\' ) {
 					p2++;
-					break;
 				} else {
 					p2++;
+					break;
 				}
 			}
 
@@ -65,7 +67,7 @@
 	function pretty(str) {
 		var tab = '\t';
 		return str.replace(/([^;]+?);/g, '$1;\n')
-					.replace(/([\s\S]+?\}])(\s*);?/g, '$1\n') 							// 在 } 后追加 \n
+					.replace(/([\s\S]+?\})(\s*);?/g, '$1\n') 							// 在 } 后追加 \n
 					.replace(/([^{]+?\{)\s*([^\s}])/g, '$1\n$2')						// {后面存在非空字符, 则换行
 					.replace(/(if)\s*(\([^()]+\))\s*([^{])/g, '$1 $2 $3')				// 如果if(.+)后面不是{, 则换行
 					.replace(/(return[^\n]*)\}/g, '$1\n}')								// return abc} 中'}'之前换行 
@@ -73,6 +75,7 @@
 					.replace(/\s*([+\-*/]\={1,3})\s*/g, ' $1 ')
 					.replace(/\s*([?:]|\|\|)\s*/g, ' $1 ')
 					.replace(/,\s*/g, ', ')
+					// .replace(/\s*function/g, '\n')
 					.replace(/([\s\S]+?)(for\s*\([\s\S]+?\))/g, function($0, $1, $2) {	// 删除 for 循环中的 \n
 						return $1 + $2.replace(/\n+/g, '')							
 					})
