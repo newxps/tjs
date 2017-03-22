@@ -5,41 +5,6 @@
 		window.tpl = factory();
 	}
 })(function() {
-	// function doUglify(str) {
-	// 	return str.replace(/([\s\S]+?);*\n+/g, '$1;\n')				// 在所有换行地方替换为;
-	// 				.replace(/([\s\S]+?\))[\s;]*(?=\{)/g, '$1')		// 去掉所有)和{之间的;
-	// 				.replace(/([\s\S]+?\{)([\s;]*)(?=[^;])/g, '$1 ')
-	// 				.replace(/[\s;]*\n+\s*/g, ';');
-	// }
-
-
-	// 待完善
-	// function pretty(str) {
-	// 	var tab = '\t';
-	// 	return str.replace(/([\s\S]+?);/g, '$1;\n')					// 替换 ; 为 ;\n
-	// 				.replace(/([\s\S]+?[\{\}])(\s*);?/g, '$1\n') 	// 在 { 和 } 后追加 \n
-	// 				.replace(/([\s\S]+?)(for\s*\([\s\S]+?\))/g, function($0, $1, $2) {
-	// 					return $1 + $2.replace(/\n+/g, '')			// 删除 for 循环中的 \n
-	// 				})
-	// 				.replace(/.+;?\n/gm, function($0) {				// 缩进
-	// 					if( /^\s*\}/.test($0) ) tab = tab.replace(/\t/, '');
-	// 					$0 = tab + $0.replace(/^\s+/, '');
-	// 					if( /^\s+break;\s+$/.test($0) ) tab = tab.replace(/\t/, '');
-	// 					if( /\{\s*$/.test($0) ) tab += '\t';
-	// 					if( /^\s+$/g.test($0) ) $0 = '';
-	// 					$0 = $0.replace(/(^\s+case[^\n]+?:)/, function($0, $1) {
-	// 						tab += '\t';
-	// 						return $1 + '\n' + tab;
-	// 					});
-	// 					$0 = $0.replace(/(^\s+default\s*?:)/, function($0, $1) {
-	// 						tab += '\t';
-	// 						return $1 + '\n' + tab;
-	// 					})
-	// 					// console.log(`|${$0}|`)
-	// 					return $0;
-	// 				})
-	// }
-
 	function _rmJsComment(str) {
 		return String(str).replace(/\/\/.*?\n/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
 	}

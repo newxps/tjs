@@ -39,8 +39,18 @@
 	<script src="js/javascript.js"></script>
 	<script src="js/matchbrakets.js"></script>
 	<script src="js/tpl.js"></script>
+	<script src="js/pretty.js"></script>
 
 	<script type="text/template" id="template">
+		<%
+			var a = 'abcdefg';
+			var b = '<%arr.forEach(e => fda)%>'
+			
+			function abcd() {
+				console.log(arguments);
+			}
+		%>
+		
 		 <%if(editable) {%>
             <a href="javascript:;" class="add-task-des <%=description ? 'hidden' : ''%>">+ 添加任务描述</a>
             <div class="task-des <%=description ? '' : 'hidden'%>">
@@ -434,11 +444,12 @@
 			if( editor.timer ) clearTimeout(editor.timer);
 			editor.timer = setTimeout(function() {
 				// console.log( tpl(editor.getValue()) )
-				// try {
-					transformEditor.setValue( tpl(editor.getValue()).toString() )
-				// } catch(e) {
-					// console.warn('模板转换出错!')
-				// }
+				try {
+					var str = tpl(editor.getValue()).toString();
+					transformEditor.setValue( pretty(str) )
+				} catch(e) {
+					console.warn('模板转换出错!')
+				}
 			}, 500)
 		})
 
