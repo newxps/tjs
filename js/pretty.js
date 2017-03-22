@@ -1,3 +1,11 @@
+/**
+*
+*	created by fanlinfeng
+*	github.com/flfwzgl
+*
+*/
+
+
 ;(function(global, factory) {
 	if(typeof module === 'object' && module.exports) {
 		module.exports = factory();
