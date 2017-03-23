@@ -14,25 +14,51 @@
 			position: absolute;
 		}
 		.editor {
-			width: 25%;
+			/*width: 25%;*/
 			height: 100%;
-			float: left;
-			position: relative;
-			border-right: 2px solid #666;
+			/*float: left;*/
+			position: absolute;
+			/*border-right: 2px solid #666;*/
 			box-sizing: border-box;
 		}
 		.editor .CodeMirror {
 			width: 100%;
 			height: 100%;
 		}
+		.line {
+			cursor: col-resize;
+			/*float: left;*/
+			position: absolute;
+			width: 6px;
+			top: 0;
+			margin-left: -3px;
+			height: 100%;
+			/*background: #666;*/
+			/*position: relative;*/
+			z-index: 100;
+		}
+
+		.line:after {
+			content: ' ';
+			position: absolute;
+			width: 4px;
+			height: 100%;
+			left: 50%;
+			margin-left: -2px;
+			top: 0;
+			background: #666;
+		}
 	</style>
 </head>
 <body>
 	<div class="box">
-		<div class="editor source"></div>
-		<div class="editor transform"></div>
-		<div class="editor use"></div>
-		<div class="editor target"></div>
+		<div class="editor source" style="left: 0; right: 75%"></div>
+		<div class="line" style="left: 25%" range=""></div>
+		<div class="editor transform" style="left: 25%; right: 50%"></div>
+		<div class="line" style="left: 50%"></div>
+		<div class="editor use" style="left: 50%; right: 25%"></div>
+		<div class="line" style="left: 75%"></div>
+		<div class="editor target" style="left: 75%; right: 0"></div>
 	</div>
 
 	<script src="js/codemirror.js"></script>
@@ -41,454 +67,169 @@
 	<script src="js/tpl.js"></script>
 	<script src="js/pretty.js"></script>
 
-	<script type="text/template" id="template">
-		<%
-			var a = 'abcdefg';
-			var b = '<%arr.forEach(e => e**2)%>'
-			
-			function abcd() {
-				console.log(arguments);
-			}
-		%>
-		
-		 <%if(editable) {%>
-            <a href="javascript:;" class="add-task-des <%=description ? 'hidden' : ''%>">+ 添加任务描述</a>
-            <div class="task-des <%=description ? '' : 'hidden'%>">
-                <textarea placeholder="请输入任务描述(500字以内)" maxlength="500"><%=decodeEmoji(description).replace(/\[回车\]/g, '\n').replace(/\[空格\]/g, ' ')%></textarea>
-                <div class="input-bottom-box hidden">
-                    <a href="javascript:;" class="btn" sure>确定</a>
-                    <a href="javascript:;" class="btn" cancel>取消</a>
-                </div>
-            </div>
-        <%} else {%>
-            <div style="line-height: 1.5; color:#999; font-size: 12px;">
-                <%-decodeEmoji(encodeHTML(description)).replace(/\[回车\]/g, '<br>').replace(/(\[空格\])+/g, '&nbsp;')%>
-            </div>
-        <%}%>
-        <%if(editable || (locals.taskCatalogueList && taskCatalogueList.length) ) {%>
-            <div class="tag-grp <%=taskCatalogueList.length === 5 ? 'full' : ''%>">
-                <div class="t">标签</div>
-                <div class="c fit">
-                    <%locals.taskCatalogueList && taskCatalogueList.forEach(function(e) {%>
-                        <div class="tag">
-                            <%=e.name%>
-                            <%if(editable) {%>
-                                <i del-tag-by-id="<%=e.id%>"></i>
-                            <%}%>
-                        </div>
-                    <%})%>
-                    <%if(editable) {%>
-                        <div class="text">
-                            <input type="text" maxlength="8">
-                            <ul class="hidden w100">
-                            // <li class="active">fdasf</li>
-                            // <li>56yhjnm</li>
-                            </ul>
-                        </div>
-                        <i class="add-tag-btn"></i>
-                    <%}%>
-                </div>
-            </div>
-        <%}%>
-        <div class="status-tb">
-            <ul class="t">
-                <li>负责人</li>
-                <li>截止时间</li>
-                <li>重要程度</li>
-            </ul>
-            <ul class="c">
-                <li member-id="<%=chargePersonList[0] && chargePersonList[0].memberId || ''%>" class="<%=editable ? 'choose-principal' : ''%>" type="principal">
-                    <div class="person">
-                        <%
-                            if(locals.chargePersonList && chargePersonList[0]) {
-                                var chargePerson = chargePersonList[0]
-                                %>
-                                    <img src="<%=thumb(chargePerson.headImgUrl)%>" class="default-avatar" onError="setErrorImg(this, '<%=chargePerson.realName%>', '', 12, 30, 30)">
-                                    <%=chargePerson.realName%>
-                                <%
-                            }
-                        %>
-                    </div>
-                </li>
-                <li>
-                    <%if(editable) {%>
-                        <div class="input-grp ib">
-                            <input type="text" class="input-text-hover w90 end-time" old-value="<%=formatTime(endTime, 'yyyy-M-d')%>" value="<%=formatTime(endTime, 'yyyy-M-d')%>">
-                            <i class="icomoon-up ico-right"></i>
-                            <i class="icomoon-down ico-right"></i>
-                        </div>
-                    <%} else {%>
-                        <%=formatTime(endTime, 'yyyy-MM-dd')%>
-                    <%}%>
-                </li>
-                <li>
-                    <%if(editable) {%>
-                        <div class="input-select-hover input-grp ib" widget="important" <%=!editable ? 'disabled' : ''%>>
-                            <span><%=important%></span>
-                            <i class="icomoon-up ico-right"></i>
-                            <i class="icomoon-down ico-right"></i>
-                            <ul>
-                                <li class="<%=+importance === 1 ? 'active' : ''%>">重要</li>
-                                <li class="<%=+importance === 0 ? 'active' : ''%>">普通</li>
-                            </ul>
-                        </div>
-                    <%} else {%>
-                        <%=important%>
-                    <%}%>
-                </li>
-            </ul>
-        </div>
-        <%if(editable) {%>
-            <dl class="people-grp">
-                <dt>参与人</dt>
-                <%if(locals.participantsPersonList && participantsPersonList.length) {
-                    var member = participantsPersonList;
-                    member.forEach(function(e) {%>
-                        <dd member-id="<%=e.memberId%>">
-                            <img src="<%=thumb(e.headImgUrl)%>" class="default-avatar" onError="setErrorImg(this, '<%=e.realName%>', '', 12, 30, 30)">
-                            <div class="del"></div>
-                            <span title="<%=e.realName%>"><%=e.realName%></span>
-                        </dd>
-                    <%})
-                }%>
-                <dd class="add" type="participant"></dd>
-            </dl>
-        <%} else {
-            if(locals.participantsPersonList && participantsPersonList.length) {
-                var member = participantsPersonList;
-        %>
-                <dl class="people-grp">
-                    <dt>参与人</dt>
-                    <%member.forEach(function(e) {%>
-                        <dd member-id="<%=e.memberId%>">
-                            <img src="<%=thumb(e.headImgUrl)%>" class="default-avatar" onError="setErrorImg(this, '<%=e.realName%>', '', 12, 30, 30)">
-                            <span title="<%=e.realName%>"><%=e.realName%></span>
-                        </dd>
-                    <%})%>
-                </dl>
-            <%}
-        }%>
-        <%if(editable) {%>
-            <dl class="people-grp informer">
-                <dt>知会人</dt>
-                <%if(locals.informPersonList && informPersonList.length) {
-                    var member = informPersonList;
-                    member.forEach(function(e) {
-                %>
-                        <dd member-id="<%=e.memberId%>">
-                            <img src="<%=thumb(e.headImgUrl)%>" class="default-avatar" onError="setErrorImg(this, '<%=e.realName%>', '', 12, 30, 30)">
-                            <%if(editable) {%>
-                                <div class="del"></div>
-                            <%}%>
-                            <span><%=e.realName%></span>
-                        </dd>
-                    <%})%>
-                <%}%>
-                <dd class="add" type="informer"></dd>
-            </dl>
-        <%} else {
-            if(locals.informPersonList && informPersonList.length) {
-                var member = informPersonList;
-        %>
-                <dl class="people-grp">
-                    <dt>知会人</dt>
-                    <%member.forEach(function(e) {%>
-                        <dd>
-                            <img src="<%=thumb(e.headImgUrl)%>" class="default-avatar" onError="setErrorImg(this, '<%=e.realName%>', '', 12, 30, 30)">
-                            <span><%=e.realName%></span>
-                        </dd>
-                    <%})%>
-                </dl>
-            <%}
-        }%>
-        <div class="k-v unfoldable">
-            <span>开始时间:</span>
-            <%if(editable) {%>
-                <div class="input-grp ib">
-                    <input type="text" class="input-text-hover w100 start-time" <%=!editable ? 'disabled' : ''%> old-value="<%=formatTime(startTime, 'yyyy-M-d')%>" value="<%=formatTime(startTime, 'yyyy-M-d')%>">
-                        <i class="icomoon-up ico-right"></i>
-                        <i class="icomoon-down ico-right"></i>
-                </div>
-            <%} else {%>
-                <div class="ib">
-                    <%=formatTime(startTime, 'yyyy-MM-dd')%>
-                </div>
-            <%}%>
-        </div>
-        <%if(locals.taskFileStr && taskFileStr.length || editable ) {%>
-            <dl class="attachment task-attachment-list unfoldable">
-                <%if(editable) {%>
-                    <dt>
-                        <span>附件:</span>
-                        <div class="ib btn file-ctn">
-                            上传<input type="file" class="upload-btn" name="file" multiple>
-                        </div>
-                        <div class="ib upload-progress" style="margin-left: 20px;"></div>
-                        <div class="ib" style="color: #aaa; font-size: 12px;">单个文件最大支持20MB</div>
-                    </dt>
-                <%} else {%>
-                    <dt>
-                        <span>附件:</span>
-                    </dt>
-                <%}%>
-                <%	var file = locals.taskFileStr || [];
-                    var cls = '';
-                    file.forEach(function(e) {
-                        cls = getIco( e.fileExtension );
-                %>
-                        <dd class="file-grp">
-                            <div>
-                                <span class="<%=cls%>"></span>
-                                <%if(editable) {%>
-                                    <i class="icomoon-cha" del-file="<%=e.id%>"></i>
-                                <%}%>
-                                <i class="icomoon-download-01" open-url="<%=e.fileKey%>"></i>
-                                <div class="filename" title="<%=e.fileName + e.fileExtension%>">
-                                    <%=e.fileName + e.fileExtension%>
-                                </div>
-                            </div>
-                        </dd>
-                <%})%>
-            </dl>
-        <%}%>
-        <div class="k-v unfoldable">
-            <span>关联项目:</span>
-            <%if(editable) {%>
-                <div class="input-select-hover input-grp ib rel" widget="link-project" data-value="<%=locals.projectId || 0%>">
-                    <span class="l omit w70" style="text-align: left"><%=locals.projectName && projectName || '不关联项目'%></span>
-                    <i class="icomoon-up ico-right"></i>
-                    <i class="icomoon-down ico-right"></i>
-                    <ul class="abs w100" style="left: -1px; top: 25px">
-                        <li class="tl <%=!locals.projectName ? 'active' : ''%>">不关联项目</li>
-                    </ul>
-                </div>
-                <div class="input-select-hover input-grp ib rel <%=!locals.projectName && 'hidden' || ''%>" widget="task-kind" data-value="<%=locals.taskCatalogueId || 0%>">
-                    <span class="l omit w70"><%=locals.taskCatalogueName && taskCatalogueName || '未分类'%></span>
-                    <i class="icomoon-up ico-right"></i>
-                    <i class="icomoon-down ico-right"></i>
-                    <ul class="abs w100" style="left: -1px; top: 25px;">
-                        <!-- <li class="<%=!locals.taskCatalogueId ? 'active' : ''%>">未分类</li> -->
-                    </ul>
-                </div>
-            <%} else {%>
-                <div class="ib">
-                    <%=locals.projectName || '不关联项目'%>
-                </div>
-                <div class="ib <%=!locals.projectName && 'hidden' || ''%>" style="margin-left: 20px">
-                    <%=locals.taskCatalogueName && taskCatalogueName || ''%>
-                </div>
-            <%}%>
-        </div>
-        <div class="k-v unfoldable">
-            <span>关联父任务:</span>
-            <%if(editable) {%>
-                <div class="matcher input-grp ib rel" matcher="link-parent">
-                    <span><%=locals.pName || '不关联父任务'%></span>
-                    <input type="text" value="">
-                    <ul class="abs w110"></ul>
-                </div>
-            <%} else {%>
-                <div class="ib"><%=locals.pName || '不关联父任务'%></div>
-            <%}%>
-        </div>
-        <div class="k-v unfoldable">
-            <span>提前提醒:</span>
-            <%if(editable) {%>
-                <div class="input-select-hover input-grp ib" widget="remind-type" <%=!editable ? 'disabled' : ''%>>
-                    <span>
-                    <%
-                        var remindType = +locals.remindType;
-                        switch(remindType) {
-                            case 0:
-                                %>不提前提醒<%break;
-                            case 3:
-                                %>任务开始和结束前<%break;
-                            case 1:
-                                %>任务开始前<%break;
-                            case 2:
-                                %>任务结束前<%break;
-                        }
-                    %>
-                    </span>
-                    <i class="icomoon-up ico-right"></i>
-                    <i class="icomoon-down ico-right"></i>
-                    <ul>
-                        <li type="0" class="<%=remindType === 0 ? 'active' : ''%>">不提前提醒</li>
-                        <li type="3" class="<%=remindType === 3 ? 'active' : ''%>">任务开始和结束前</li>
-                        <li type="1" class="<%=remindType === 1 ? 'active' : ''%>">任务开始前</li>
-                        <li type="2" class="<%=remindType === 2 ? 'active' : ''%>">任务结束前</li>
-                    </ul>
-                </div>
-                <div class="input-select-hover input-grp ib <%=+remindType===0 ? 'hidden' : ''%>" widget="remind-time" <%=!editable ? 'disabled' : ''%>>
-                    <span>
-                    <%
-                        var remindTime = +locals.remindTime;
-                        switch(remindTime) {
-                            case 1:
-                                %>1天<%
-                                break;
-                            case 2:
-                                %>2天<%
-                                break;
-                            case 3:
-                                %>3天<%
-                                break;
-                            case 4:
-                                %>4天<%
-                                break;
-                            case 5:
-                                %>5天<%
-                                break;
-                        }
-                    %>
-                    </span>
-                    <i class="icomoon-up ico-right"></i>
-                    <i class="icomoon-down ico-right"></i>
-                    <ul>
-                        <li time="1" class="<%=remindTime === 1 ? 'active' : ''%>">1天</li>
-                        <li time="2" class="<%=remindTime === 2 ? 'active' : ''%>">2天</li>
-                        <li time="3" class="<%=remindTime === 3 ? 'active' : ''%>">3天</li>
-                        <li time="4" class="<%=remindTime === 4 ? 'active' : ''%>">4天</li>
-                        <li time="5" class="<%=remindTime === 5 ? 'active' : ''%>">5天</li>
-                    </ul>
-                </div>
-            <%} else {%>
-                <div class="ib">
-                    <%
-                        var remindType = +locals.remindType;
-                        switch(remindType) {
-                            case 0:
-                                %>不提前提醒<%
-                                break;
-                            case 3:
-                                %>任务开始和结束前<%
-                                break;
-                            case 2:
-                                %>任务开始前<%
-                                break;
-                            case 1:
-                                %>任务结束前<%
-                                break;
-                        }
-                    %>
-                    &emsp;
-                    <%
-                        var remindTime = +locals.remindTime;
-                        if(remindType !== 0) {
-                            switch(remindTime) {
-                                case 1:
-                                    %>1天<%
-                                    break;
-                                case 2:
-                                    %>2天<%
-                                    break;
-                                case 3:
-                                    %>3天<%
-                                    break;
-                                case 4:
-                                    %>4天<%
-                                    break;
-                                case 5:
-                                    %>5天<%
-                                    break;
-                            }
-                        }
-                    %>
-                </div>
-            <%}%>
-        </div>
-        <div class="show-detail-btn">
-            <i class="icomoon-down"></i> 展开
-        </div>
-        <div class="hide-detail-btn">
-            <i class="icomoon-up"></i> 收起
-        </div>
-        <div class="record-box">
-            <ul class="tab">
-                <li bind-class="reply-box" class="active">回复<span id="task-reply-count"></span></li>
-                <li bind-class="child-task-box">子任务</li>
-                <li bind-class="file-box">文件</li>
-                <li bind-class="operate-box">操作记录</li>
-            </ul>
-            <div class="reply-box active" type="reply">
-            </div>
-            <div class="child-task-box" type="child-task">
-            </div>
-            <div class="file-box" type="file">
-            </div>
-            <div class="operate-box" type="operate">
-            </div>
-        </div>
-    </div>
-</div>
-	</script>
-
 	<script>
+		document.ondragstart = function(e) {
+			return false;
+		}
+
+		function get(url, fns, fnf) {
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+				if(xhr.readyState == 4) {
+					if(xhr.status == 200 || xhr.status == 304) {
+						fns && fns(xhr.responseText);
+					} else {
+						fnf && fnf();
+					}
+				}
+			}
+			xhr.open('GET', url);
+			xhr.send();
+		}
+
+
+		String.prototype.render = function(data) {
+			return tpl(this)(data);
+		}
+
+
+		var slice = [].slice;
+
 		var source = document.getElementsByClassName('source')[0];
 		var transform = document.getElementsByClassName('transform')[0];
 		var use = document.getElementsByClassName('use')[0];
 		var target = document.getElementsByClassName('target')[0];
 
+		var lines = slice.call(document.getElementsByClassName('line'));
 
-		var sourceEditor = CodeMirror(source, {
-			value: document.getElementById('template').textContent,
-			mode:  'javascript',
-			// lineNumbers: true,
-			styleActiveLine: true,
-    		matchBrackets: true,
-			theme: 'theme',
-			tabSize: 2,
-			indentWithTabs: true
-		})
-		.on('change', function(editor) {
-			if( editor.timer ) clearTimeout(editor.timer);
-			editor.timer = setTimeout(function() {
-				// console.log( tpl(editor.getValue()) )
-				try {
-					var str = tpl(editor.getValue()).toString();
-					transformEditor.setValue( pretty(str) )
-				} catch(e) {
-					console.warn('模板转换出错!')
+		var str, fn;
+		get('template.tpl', function(res) {
+			var sourceEditor = CodeMirror(source, {
+				value: res,
+				mode:  'javascript',
+				// lineNumbers: true,
+				styleActiveLine: true,
+	    		matchBrackets: true,
+				theme: 'theme',
+				tabSize: 2,
+				indentWithTabs: true
+			})
+			.on('change', function(editor) {
+				if( editor.timer ) clearTimeout(editor.timer);
+				editor.timer = setTimeout(function() {
+					// console.log( tpl(editor.getValue()) )
+					try {
+						fn = tpl(editor.getValue());
+						transformEditor.setValue( pretty(fn.body.toString() + `
+String.prototype.render = function(data) {
+	return tpl(this)(data);
+}
+							`) );
+						
+						var fn = new Function('template', 'return ' + useEditor.getValue().replace(/^\s+/, ''));
+						targetEditor.setValue( fn(editor.getValue()) );
+					} catch(e) {
+						console.warn('模板转换出错!')
+					}
+
+				}, 500)
+			})
+
+			var transformEditor = CodeMirror(transform, {
+				value: '',
+				mode:  'javascript',
+				// lineNumbers: true,
+				styleActiveLine: true,
+	    		matchBrackets: true,
+				theme: 'theme',
+				tabSize: 2,
+				indentWithTabs: true,
+				// readOnly: true,
+				// cursorHeight: 0
+			});
+
+			var useEditor = CodeMirror(use, {
+				value: `
+template.render({
+	list: [{
+		id: 1, name: '周杰伦'
+	}, {
+		id: 3, name: '陈奕迅'
+	}, {
+		id: 5, name: '张学友', isVIP: true
+	}, {
+		id: 8, name: '许巍'
+	}]
+})`,
+				mode:  'javascript',
+				// lineNumbers: true,
+				styleActiveLine: true,
+	    		matchBrackets: true,
+				theme: 'theme',
+				tabSize: 2,
+				indentWithTabs: true,
+				readOnly: true,
+				cursorHeight: 0
+			})
+			// .on('change', function(editor) {
+			// 	if( editor.timer ) clearTimeout(editor.timer);
+			// 	editor.timer = setTimeout(function() {
+			// 		// try {
+			// 			var tmp = 'var res = ' + editor.getValue().replace(/^\s+/, '');
+			// 			eval(tmp)
+			// 			console.log(res)
+			// 			targetEditor.setValue( res );
+			// 		// } catch(e) {
+			// 			// console.warn('数据填写出错!')
+			// 		// }
+
+			// 	}, 500)
+			// })
+
+			var targetEditor = CodeMirror(target, {
+				value: '',
+				mode:  'javascript',
+				// lineNumbers: true,
+				styleActiveLine: true,
+	    		matchBrackets: true,
+				theme: 'theme',
+				tabSize: 2,
+				indentWithTabs: true,
+				readOnly: true,
+				cursorHeight: 0
+			});
+
+
+			lines.forEach(function(line) {
+				line.onmousedown = function(e) {
+					var self = this;
+					var prevBox = this.previousElementSibling;
+					var nextBox = this.nextElementSibling;
+
+					var leftLimit = prevBox.offsetLeft + 150;
+					var rightLimit = nextBox.offsetLeft + nextBox.offsetWidth - 150;
+					
+					document.onmousemove = function(ev) {
+						var toLeft = ev.clientX;
+						var toRight = document.documentElement.clientWidth  - ev.clientX;
+
+						// console.log(toLeft, leftLimit, rightLimit)
+						if(toLeft > leftLimit && toLeft < rightLimit) {
+							self.style.left = toLeft + 'px';
+							prevBox.style.right = toRight + 'px';
+							nextBox.style.left = toLeft + 'px';
+						} 
+					}
+
+					document.onselectstart = function() { return false; }
+
+					document.onmouseup = function() {
+						document.onmousemove = document.onmouseup = null;
+					}
 				}
-			}, 500)
+			})
+			
 		})
-
-		var transformEditor = CodeMirror(transform, {
-			value: '',
-			mode:  'javascript',
-			// lineNumbers: true,
-			styleActiveLine: true,
-    		matchBrackets: true,
-			theme: 'theme',
-			tabSize: 2,
-			indentWithTabs: true,
-			// readOnly: true,
-			// cursorHeight: 0
-		});
-
-		var useEditor = CodeMirror(use, {
-			value: '',
-			mode:  'javascript',
-			// lineNumbers: true,
-			styleActiveLine: true,
-    		matchBrackets: true,
-			theme: 'theme',
-			tabSize: 2,
-			indentWithTabs: true
-		});
-
-		var targetEditor = CodeMirror(target, {
-			value: '',
-			mode:  'javascript',
-			// lineNumbers: true,
-			styleActiveLine: true,
-    		matchBrackets: true,
-			theme: 'theme',
-			tabSize: 2,
-			indentWithTabs: true,
-			readOnly: true,
-			cursorHeight: 0
-		});
 	</script>
 </body>
 </html>

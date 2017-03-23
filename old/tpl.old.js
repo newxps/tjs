@@ -162,7 +162,11 @@
 		});
 		res = 'var _res = "";with(data || {}) {' + res + '} return _res;' 
 
-		return new Function('data', opt.uglify ? uglify(res) : pretty(res) );
+		var fn = new Function('data', opt.uglify ? uglify(res) : pretty(res) );
+
+		return function(data) {
+			return fn.call(this, data, _en);
+		}
 	}
 });
 

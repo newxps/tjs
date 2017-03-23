@@ -1,5 +1,5 @@
 /**
-*	
+*
 *	created by fanlinfeng
 *	github.com/flfwzgl
 *
@@ -27,6 +27,7 @@
 	}
 
 	return function transform(str, opt) {
+		str = str || '';
 		opt = opt || {};
 		opt.ld = opt.ld || '<%';
 		opt.rd = opt.rd || '%>';
@@ -101,7 +102,13 @@
 
 		res = 'var _res = "";with(data || {}) {' + res + '}\nreturn _res;' 
 
-		return new Function('data', opt.uglify ? uglify(res) : (res) );
+		var body = new Function('data', '_encodeHTML', opt.uglify ? uglify(res) : (res) );
+
+		var fn = function(data) {
+			return body(data, _encodeHTML);
+		}
+
+		return fn.body = body, fn;
 	}
 
 });
