@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>tpl-模板替换工具</title>
+	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/codemirror.css">
 	<link rel="stylesheet" type="text/css" href="css/theme.css">
 	<style>
@@ -47,6 +48,46 @@
 			margin-left: -2px;
 			top: 0;
 			background: #666;
+		}
+
+		.editor:after {
+			width: 100px;
+			height: 30px;
+			line-height: 30px;
+			background: rgba(255, 255, 255, .5);
+			position: absolute;
+			text-align: center;
+			color: #333;
+			font-size: 14px;
+			top: 0;
+			right: 0;
+			border-radius: 0 0 0 10px;
+			z-index: 100;
+		}
+
+		.source:after {
+			content: '模板';
+		}
+		.transform:after {
+			content: '生成函数';
+		}
+		.use:after {
+			content: '用法';
+		}
+		.target:after {
+			content: '最终HTML';
+		}
+
+		.transform:before, .target:before {
+			content: ' ';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			cursor: not-allowed;
+			z-index: 99;
+		}
+		.transform .cm-s-theme.CodeMirror, .target .cm-s-theme.CodeMirror {
+			background: #2b2b2b;
 		}
 	</style>
 </head>
@@ -102,7 +143,7 @@
 
 		var lines = slice.call(document.getElementsByClassName('line'));
 
-		var str, fn;
+		var template = ''
 		get('template.tpl', function(res) {
 			var sourceEditor = CodeMirror(source, {
 				value: res,
@@ -113,8 +154,9 @@
 				theme: 'theme',
 				tabSize: 2,
 				indentWithTabs: true
-			})
-			.on('change', function(editor) {
+			});
+
+			sourceEditor.on('change', function(editor) {
 				if( editor.timer ) clearTimeout(editor.timer);
 				editor.timer = setTimeout(function() {
 					// console.log( tpl(editor.getValue()) )
@@ -129,7 +171,7 @@ String.prototype.render = function(data) {
 						var fn = new Function('template', 'return ' + useEditor.getValue().replace(/^\s+/, ''));
 						targetEditor.setValue( fn(editor.getValue()) );
 					} catch(e) {
-						console.warn('模板转换出错!')
+						alert('模板出错!')
 					}
 
 				}, 500)
@@ -168,23 +210,21 @@ template.render({
 				theme: 'theme',
 				tabSize: 2,
 				indentWithTabs: true,
-				readOnly: true,
-				cursorHeight: 0
+				// readOnly: true,
+				// cursorHeight: 0
 			})
-			// .on('change', function(editor) {
-			// 	if( editor.timer ) clearTimeout(editor.timer);
-			// 	editor.timer = setTimeout(function() {
-			// 		// try {
-			// 			var tmp = 'var res = ' + editor.getValue().replace(/^\s+/, '');
-			// 			eval(tmp)
-			// 			console.log(res)
-			// 			targetEditor.setValue( res );
-			// 		// } catch(e) {
-			// 			// console.warn('数据填写出错!')
-			// 		// }
 
-			// 	}, 500)
-			// })
+			useEditor.on('change', function(editor) {
+				if( editor.timer ) clearTimeout(editor.timer);
+				editor.timer = setTimeout(function() {
+					try {
+						var fn = new Function('template', 'return ' + editor.getValue().replace(/^\s+/, ''));
+						targetEditor.setValue( fn(sourceEditor.getValue()) );
+					} catch(e) {
+						alert('数据源格式出错!')
+					}
+				}, 500)
+			})
 
 			var targetEditor = CodeMirror(target, {
 				value: '',
@@ -198,6 +238,10 @@ template.render({
 				readOnly: true,
 				cursorHeight: 0
 			});
+
+			setTimeout(function() {
+				CodeMirror.signal(sourceEditor, 'change', sourceEditor)
+			}, 0)
 
 
 			lines.forEach(function(line) {
