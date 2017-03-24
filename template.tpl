@@ -1,9 +1,16 @@
+<%
+    function getRand() {
+        return (Math.random()*1000).toFixed(1);
+    }
+%>
+
 <%if(list.length > 0) {%>
     <ul>
         <%list.forEach(function(e, i) {%>
-            <li data-id="<%=e.id%>"
+            <li data-rand="<%=getRand()%>"
                 role="<%=e.isVIP ? 'vip' : ''%>">
-                <%=e.name%> <%=i % 2 === 0 ? '(双数)' : '(单数)'%>
+                <%=e.id + '.' + e.name%>
+                <%=i % 2 === 0 ? '(双数)' : '(单数)'%>
             </li>
         <%})%>
     </ul>

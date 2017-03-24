@@ -75,7 +75,7 @@
 			content: '用法';
 		}
 		.target:after {
-			content: '最终HTML';
+			content: '生成HTML';
 		}
 
 		.transform:before, .target:before {
@@ -89,6 +89,45 @@
 		.transform .cm-s-theme.CodeMirror, .target .cm-s-theme.CodeMirror {
 			background: #2b2b2b;
 		}
+
+		.info {
+			width: 300px;
+			height: 40px;
+			line-height: 40px;
+			position: fixed;
+			left: 50%;
+			top: 70%;
+			margin-top: -20px;
+			margin-left: -150px;
+			text-align: center;
+			color: #f66;
+			background: #f3e9e9;
+			z-index: 1000;
+			border-radius: 10px;
+			font-size: 14px;
+			display: none;
+		}
+
+		.info.active {
+			display: block;
+			animation: fade-in .3s ease;
+		}
+
+		@keyframes fade-in {
+			0% {
+				display: none;
+				opacity: 0;
+			}
+			1% {
+				display: block;
+				opacity: 0;
+				transform: translate3d(0, 20px, 0);
+			}
+			100% {
+				opacity: 1;
+				transform: translate3d(0, 0, 0);
+			}
+		}
 	</style>
 </head>
 <body>
@@ -101,6 +140,8 @@
 		<div class="line" style="left: 75%"></div>
 		<div class="editor target" style="left: 75%; right: 0"></div>
 	</div>
+
+	<div class="info">模板出错</div>
 
 	<script src="js/codemirror.js"></script>
 	<script src="js/javascript.js"></script>
@@ -128,6 +169,15 @@
 			xhr.send();
 		}
 
+		var info = document.getElementsByClassName('info')[0];
+		function warn(str) {
+			info.className = 'info';
+			setTimeout(function() {
+				info.innerHTML = str;
+				info.className += ' active';
+			})
+		}
+
 
 		String.prototype.render = function(data) {
 			return tpl(this)(data);
@@ -144,7 +194,7 @@
 		var lines = slice.call(document.getElementsByClassName('line'));
 
 		var template = ''
-		get('template.tpl', function(res) {
+		get(`template.tpl?t=${Date.now()}` , function(res) {
 			var sourceEditor = CodeMirror(source, {
 				value: res,
 				mode:  'javascript',
@@ -170,11 +220,12 @@ String.prototype.render = function(data) {
 						
 						var fn = new Function('template', 'return ' + useEditor.getValue().replace(/^\s+/, ''));
 						targetEditor.setValue( fn(editor.getValue()) );
+						info.className = 'info';
 					} catch(e) {
-						alert('模板出错!')
+						warn('模板出错')
 					}
 
-				}, 500)
+				}, 800)
 			})
 
 			var transformEditor = CodeMirror(transform, {
@@ -220,10 +271,11 @@ template.render({
 					try {
 						var fn = new Function('template', 'return ' + editor.getValue().replace(/^\s+/, ''));
 						targetEditor.setValue( fn(sourceEditor.getValue()) );
+						info.className = 'info';
 					} catch(e) {
-						alert('数据源格式出错!')
+						warn('数据源格式出错!')
 					}
-				}, 500)
+				}, 800)
 			})
 
 			var targetEditor = CodeMirror(target, {
