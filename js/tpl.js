@@ -1,7 +1,7 @@
 /**
 *
 *	created by fanlinfeng
-*	github.com/flfwzgl/tpl
+*	github.com/flfwzgl
 *
 */
 
