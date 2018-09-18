@@ -25,7 +25,7 @@
   }
 
   // 对 ", \n, \t 转义
-  function _es (str) {
+  function _escape (str) {
     return String(str).replace(/"/g, '\\"')
       .replace(/\n/g, '\\n')
       .replace(/\t/g, '\\t')
@@ -37,128 +37,71 @@
 
     var open = opt.open || '<%'
       , close = opt.close || '%>'
-      , openCh = open.charAt(0)
-      , closeCh = close.charAt(0)
       , openLen = open.length
       , closeLen = close.length
-
-    var isJs = false
-      , isSingleQuote = false
-      , isDoubleQuote = false
-      , isRowCommet = false
-      , isBlockCommet = false
-
-    var tokens = ['{', '[', '(', ':', ';'];
-
-    var line;
     
-    var i = 0, j = 0, res = '', frag = '';
+    var i = 0, j = 0, res = '', frag = '', ch;
 
-    // 逐字遍历, 防止引号中包含定界符或引号 导致的bug
+    var isJs = false;
+
+
+    var i = 0, j = 0, frag = '';
+
     while (j < str.length) {
       if (!isJs) {
         // html
-        if (str.indexOf(open) === j) {
+        if (str.indexOf(open, j) === j) {
+          res += '\n_res += "' + _escape(str.substring(i, j)) + '";\n';
+          i = j += openLen;
           isJs = true;
-          frag = _es(str.substring(i, j));
-          if (frag) {
-            res += '\n_res += "' + frag + '";';
-          }
-          i = j = j + open.length;
           continue;
         }
       } else {
-        // js内部
+        // js
 
-        // 如果是 // 注释
-        if (str.indexOf('\/\/') === j
-          && !isSingleQuote
-          && !isDoubleQuote
-        ) {
-          isRowCommet = true;
-          i = j;
-          j = str.indexOf('\n', j + 2);
-          if (~j) {
-            res += str.substring(i, j + 1);
-            i = j = j + 1;
-          } else {
-            res += str.substring(i);
-            i = j = str.length;
-          }
+        if (str.substring(j, j + 2) === '//') {
+          j = str.indexOf('\n', j);
+          j = ~j ? j + 1 : str.length;
         }
 
-        // 如果是 /**/ 注释
-        if (str.indexOf('/*') === j
-          && !isSingleQuote
-          && !isDoubleQuote
-        ) {
-          isBlockCommet = true;
-          i = j;
+        if (str.substring(j, j + 2) === '/*') {
           j = str.indexOf('*/', j + 2);
-          if (~j) {
-            res += str.substring(i, j + 2);
-            i = j = j + 2;
-          } else {
-            res += str.substring(i);
-          }
+          j = ~j ? j + 2 : str.length;
         }
 
-        // 如果是 单引号
-        if (str.charAt(j) === "'"
-          && str.charAt(j - 1) !== '\\'
-          && !isDoubleQuote
-        ) {
-          isSingleQuote = true;
+        if (str.charAt(j) === '\'') {
+          j = str.indexOf('\'', j + 1);
+          while (~(j = str.indexOf('\'', j + 1)))
+            if (str.charAt(j - 1) !== '\\') break;
         }
 
-        // 如果是 双引号
-        if (str.charAt(j) === '"'
-          && str.charAt(j - 1) !== '\\'
-          && !isSingleQuote
-        ) {
-          isDoubleQuote = true;
+        if (str.charAt(j) === '"') {
+          j = str.indexOf('"', j + 1);
+          while (~(j = str.indexOf('"', j + 1)))
+            if (str.charAt(j - 1) !== '\\') break;
         }
 
-        // 如果是 闭合分隔符        
-        if (str.charAt(j) === closeCh
-          && str.substring(j, j + closeLen) === close
-          && !is_single_quote
-          && !isDoubleQuote
-        ) { 
-          isJs = false;
-          frag = str.substring(i, j);
-          switch (frag.charAt(0)) {
+        if (i > 180) debugger
+
+        if (str.indexOf(close, j) === j) {
+          switch (str.charAt(i)) {
             case '=':
-              res += '\n_res += _encodeHTML('+ frag.substring(1).trim() +');';
-              break;
+              res += '_res += _encodeHTML(' + str.substring(i + 1, j).trim() + ');\n';
             case '-':
-              res += '\n_res += ' + frag.substring(1).trim() + ';';
-              break;
+              res += '_res += ' + str.substring(i + 1, j).trim() + ');\n';
             default:
-              // js语句
-              frag = _rmJsComment(frag).trim();
-              if (tokens.indexOf(frag.substr(-1)) > -1) {
-                res += frag;
-              } else {
-                res += frag + ';';
-              }
+              res += str.substring(i, j) + '\n';
           }
-          
-          i = j = j + closeLen;
+          i = j += closeLen;
+          isJs = false;
           continue;
         }
-
       }
-
       j++;
     }
 
-    frag = _es(str.substring(i, j));
-    if (frag) {
-      res += '_res += "' + frag + '";';
-    }
 
-    res = 'var _res = "";\nwith(data || {}) {\n' + res + '\n}\nreturn _res;' 
+    res = 'var _res = "";\nwith(data || {}) {\n' + res + '\n}\nreturn _res;';
 
     var body = new Function('data', '_encodeHTML', res);
 
