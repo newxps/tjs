@@ -39,6 +39,7 @@
       , close = opt.close || '%>'
       , openLen = open.length
       , closeLen = close.length
+      , len = str.length
     
     var i = 0, j = 0, res = '', frag = '', ch;
 
@@ -47,7 +48,8 @@
 
     var i = 0, j = 0, frag = '';
 
-    while (j < str.length) {
+    while (j < len) {
+      var tmp = str.substring(j);
       if (!isJs) {
         // html
         if (str.indexOf(open, j) === j) {
@@ -61,45 +63,52 @@
 
         if (str.substring(j, j + 2) === '//') {
           j = str.indexOf('\n', j);
-          j = ~j ? j + 1 : str.length;
+          j = ~j ? j + 1 : len;
+          continue;
         }
 
         if (str.substring(j, j + 2) === '/*') {
           j = str.indexOf('*/', j + 2);
-          j = ~j ? j + 2 : str.length;
+          j = ~j ? j + 2 : len;
+          continue;
         }
 
         if (str.charAt(j) === '\'') {
-          j = str.indexOf('\'', j + 1);
           while (~(j = str.indexOf('\'', j + 1)))
             if (str.charAt(j - 1) !== '\\') break;
+          j = ~j ? j + 1 : len;
+          continue;
         }
 
         if (str.charAt(j) === '"') {
-          j = str.indexOf('"', j + 1);
           while (~(j = str.indexOf('"', j + 1)))
             if (str.charAt(j - 1) !== '\\') break;
+          j = ~j ? j + 1 : len;
+          continue;
         }
 
-        if (i > 180) debugger
+        // if (j === 247 || j === 273) debugger
 
         if (str.indexOf(close, j) === j) {
           switch (str.charAt(i)) {
             case '=':
               res += '_res += _encodeHTML(' + str.substring(i + 1, j).trim() + ');\n';
+              break;
             case '-':
-              res += '_res += ' + str.substring(i + 1, j).trim() + ');\n';
+              res += '_res += ' + str.substring(i + 1, j).trim() + ';\n';
+              break;
             default:
               res += str.substring(i, j) + '\n';
+              break;
           }
           i = j += closeLen;
           isJs = false;
-          continue;
         }
       }
       j++;
     }
 
+    if (i < j) res += '\n_res += "' + _escape(str.substring(i, j)) + '";\n';
 
     res = 'var _res = "";\nwith(data || {}) {\n' + res + '\n}\nreturn _res;';
 

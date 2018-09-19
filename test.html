@@ -6,8 +6,7 @@
 </head>
 <body>
 	<script src="js/tpl2.js"></script>
-	<script>
-		var s = `<%
+	<script id="a" type="text/tpl"><%
 		// fdsa%>fdsa
     function getRand() {
     	   var str = 'this i%>s\' a test'
@@ -27,9 +26,19 @@
     </ul>
 <%} else {%>
     <div class="null">无数据</div>
-<%}%>`;
+<%}%></script>
 
-		var fn = tpl(s);
+<script id="b" type="text/tpl">
+	// 12345<%=   -12345%>
+	function test () {
+		alert(12<%-'haha'%>3)
+	}
+</script>
+
+	<script>
+		var str = document.getElementById('b').textContent;
+		var fn = tpl(str);
+		console.log(fn());
 	</script>
 </body>
 </html>
