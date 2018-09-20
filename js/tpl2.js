@@ -7,7 +7,7 @@
   if(typeof module === 'object' && module.exports) {
     module.exports = factory();
   } else {
-    window.tpl = factory();
+    window.tjs = factory();
   }
 })(function () {
   function _rmJsComment(str) {
@@ -41,12 +41,7 @@
       , closeLen = close.length
       , len = str.length
     
-    var i = 0, j = 0, res = '', frag = '', ch;
-
-    var isJs = false;
-
-
-    var i = 0, j = 0, frag = '';
+    var i = 0, j = 0, res = '', isJs = false;
 
     while (j < len) {
       var tmp = str.substring(j);
@@ -73,6 +68,13 @@
           continue;
         }
 
+        if (str.charAt(j) === '/') {
+          while (~(j = str.indexOf('/', j + 1)))
+            if (str.charAt(j - 1) !== '\\') break;
+          j = ~j ? j + 1 : len;
+          continue;
+        }
+
         if (str.charAt(j) === '\'') {
           while (~(j = str.indexOf('\'', j + 1)))
             if (str.charAt(j - 1) !== '\\') break;
@@ -87,7 +89,12 @@
           continue;
         }
 
-        // if (j === 247 || j === 273) debugger
+        if (str.charAt(j) === '`') {
+          while (~(j = str.indexOf('`', j + 1)))
+            if (str.charAt(j - 1) !== '\\') break;
+          j = ~j ? j + 1 : len;
+          continue;
+        }
 
         if (str.indexOf(close, j) === j) {
           switch (str.charAt(i)) {
@@ -103,6 +110,7 @@
           }
           i = j += closeLen;
           isJs = false;
+          continue;
         }
       }
       j++;
@@ -110,10 +118,10 @@
 
     if (i < j) res += '\n_res += "' + _escape(str.substring(i, j)) + '";\n';
 
-    res = 'var _res = "";\nwith(data || {}) {\n' + res + '\n}\nreturn _res;';
+    res = 'var _res = "";\nwith(data || {}) {\n' + res.replace(/\n/g, '\n\t') + '\n}\nreturn _res;';
+
 
     var body = new Function('data', '_encodeHTML', res);
-
     var fn = function (data) {
       return body(data, _encodeHTML);
     }
