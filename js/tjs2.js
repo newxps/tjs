@@ -39,7 +39,7 @@
       if (!isJs) {
         // html
         if (str.indexOf(open, j) === j || j === len) {
-          res += '\n_res.push("' + _escape(str.substring(i, j)) + '");\n';
+          res += '\n_res += "' + _escape(str.substring(i, j)) + '";\n';
           i = j += openLen;
           isJs = true;
           continue;
@@ -89,9 +89,9 @@
         if (str.indexOf(close, j) === j || j === len) {
           ch = str.charAt(i);
           if (ch === '=') {
-            res += '_res.push(_encodeHTML(' + str.substring(i + 1, j).trim() + '));\n';
+            res += '_res += _encodeHTML(' + str.substring(i + 1, j).trim() + ');\n';
           } else if (ch === '-') {
-            res += '_res.push(' + str.substring(i + 1, j).trim() + ');\n';
+            res += '_res += ' + str.substring(i + 1, j).trim() + ';\n';
           } else {
             res += str.substring(i, j) + '\n';
           }
@@ -104,7 +104,7 @@
       j++;
     }
 
-    res = 'var _res = [];\nwith(data || {}) {\n' + res.replace(/\n/g, '\n\t') + '\n}\nreturn _res.join("");';
+    res = 'var _res = "";\nwith(data || {}) {\n' + res.replace(/\n/g, '\n\t') + '\n}\nreturn _res;';
 
     var body = new Function('data', '_encodeHTML', res);
     var fn = function (data) {

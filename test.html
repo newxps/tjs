@@ -108,9 +108,12 @@ Let's see some random numbers:
 %> <%=c.toFixed(10) + ((i + 1) % 6 === 0 ? "\n": "") %><%});%>
 </script>
 
+<script id="f" type="text/tpl">html<?php
+	//ffdsafdsafds%>alert(12)?></script>
+
 
 	<script>
-		var str = document.getElementById('e').textContent;
+		var str = document.getElementById('f').textContent;
 		var fn = tjs(str);
 		var html = fn({
 			list: [{
