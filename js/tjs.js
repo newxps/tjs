@@ -1,5 +1,5 @@
 /**
-* created by flf
+* created by fanlinfeng
 */
 
 ;(function (factory) {
@@ -33,13 +33,13 @@
       , closeLen = close.length
       , len = str.length
     
-    var i = 0, j = 0, res = '', isJs = false, ch;
+    var i = 0, j = 0, res = '', isJs = false, ch, tmp;
 
     while (j <= len) {
       if (!isJs) {
         // html
         if (str.indexOf(open, j) === j || j === len) {
-          res += '\n_res.push("' + _escape(str.substring(i, j)) + '");\n';
+          if (i < j) res += '_res.push("' + _escape(str.substring(i, j)) + '");\n';
           i = j += openLen;
           isJs = true;
           continue;
@@ -88,14 +88,15 @@
 
         if (str.indexOf(close, j) === j || j === len) {
           ch = str.charAt(i);
-          if (ch === '=') {
-            res += '_res.push(_encodeHTML(' + str.substring(i + 1, j).trim() + '));\n';
-          } else if (ch === '-') {
-            res += '_res.push(' + str.substring(i + 1, j).trim() + ');\n';
+          if (ch === '=' || ch === '-') {
+            if (tmp = str.substring(i + 1, j).trim()) {
+              res += ch === '='
+                ? '_res.push(_encodeHTML(' + tmp + '));\n'
+                : '_res.push(' + str.substring(i + 1, j).trim() + ');\n';
+            }
           } else {
             res += str.substring(i, j) + '\n';
           }
-
           i = j += closeLen;
           isJs = false;
           continue;
@@ -104,7 +105,11 @@
       j++;
     }
 
-    res = 'var _res = [];\nwith(data || {}) {\n' + res.replace(/\n/g, '\n\t') + '\n}\nreturn _res.join("");';
+    res = res
+      ? 'var _res = [];\n' +
+        'with (data || {}) {\n' + res + '}\n' +
+        'return _res.join("");'
+      : 'return "";'
 
     var body = new Function('data', '_encodeHTML', res);
     var fn = function (data) {
