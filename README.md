@@ -20,7 +20,7 @@
 
 ### 安装
 ``` bash
-$ npm i tjs
+$ npm i node-tjs
 ```
 或者直接引入
 ``` html
@@ -56,3 +56,67 @@ render({
 
 ### 许可
 MIT
+
+
+---
+
+
+# tjs
+
+html template engine
+
+[demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
+
+[test examples](https://flfwzgl.github.io/tjs/test)
+
+
+# Fetures
+* generating html by javascript logic
+* custom separator, default `<%%>`
+* separator in `single quote/double quote/backquote/regular expression` can be recognized automatically, such as `<%var str = 'this is a <%test%>'%>` 😊
+
+# Installation
+``` bash
+npm i node-tjs
+```
+or include directly
+``` javascript
+<script src="tjs.min.js"></script>
+```
+
+
+# Example
+template save as tpl
+``` html
+<%list.forEach(function (item, i) {%>
+  <div><%=item%></div>
+<%})%>
+```
+
+invoke
+``` javascript
+var render = tjs(tpl);
+
+render({
+  list: ['Tom', 'Lucy', 'Jack']
+})
+```
+
+output
+``` html
+  <div>Tom</div>
+
+  <div>Lucy</div>
+
+  <div>Jack</div>
+```
+
+### LICENSE
+MIT
+
+
+
+
+
+
+

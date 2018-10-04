@@ -1,5 +1,5 @@
 {
-  "name": "tjs",
+  "name": "node-tjs",
   "version": "1.0.0",
   "description": "html templates engine",
   "main": "lib/tjs.js",
