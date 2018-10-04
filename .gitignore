@@ -3,3 +3,4 @@ node_modules
 _*
 old
 *.zip
+test/asset/fork.js
