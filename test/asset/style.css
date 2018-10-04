@@ -1,0 +1,45 @@
+fieldset {
+	width: 800px;
+	font-size: 14px;
+	color: #666;
+	border: 1px solid #ccc;
+	margin: 20px auto;
+	border-radius: 7px;
+}
+
+legend {
+	font-size: 13px;
+	color: #aaa;
+}
+
+textarea {
+	width: 100%;
+	min-height: 20px;
+	border: none;
+	resize: none;
+	color: #666;
+	font-size: 12px;
+	padding: 0;
+	display: block;
+	font-family: 'Menlo';
+}
+
+textarea:focus {
+	outline: none;
+}
+
+
+footer {
+	text-align: center;
+}
+a {
+	color: #09c;
+	font-size: 14px;
+}
+
+
+div {
+	text-align: center;
+	font-size: 14px;
+	color: #666;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./asset/style.css">
+</head>
+<body>
+    <div>列表渲染</div>
+    <fieldset>
+        <legend>模板 tpl</legend>
+        <textarea id="tpl" disabled>
+<%if (list && list.length) {%>
+    <ul>
+        <%list.forEach(function (item, i) {%>
+            <li class="item <%=i % 2 === 0 ? 'grey' : ''%>"><%=item.id%>. <%=item.name%></li>
+        <%})%>
+    </ul>
+<%} else {%>
+    <div>无数据</div>
+<%}%></textarea>
+    </fieldset>
+    <fieldset>
+        <legend>使用</legend>
+        <textarea disabled>
+var render = tjs(tpl);
+render({
+    list: [{
+        id: 3, name: 'Tom'
+    }, {
+        id: 5, name: 'Jack'
+    }, {
+        id: 9, name: 'Lily'
+    }]
+});</textarea>
+    </fieldset>
+    <fieldset>
+        <legend>输出</legend>
+        <textarea id="output" disabled></textarea>
+    </fieldset>
+    <footer>
+        <a href="index.html">测试列表</a>
+    </footer>
+    <script src="./asset/help.js"></script>
+    <script src="../lib/tjs.min.js"></script>
+    <script>
+        var tpl = document.getElementById('tpl').value;
+        var render = tjs(tpl);
+
+        document.getElementById('output').value = render({
+            list: [{
+                id: 3,
+                name: 'Tom'
+            }, {
+                id: 5,
+                name: 'Jack'
+            }, {
+                id: 9,
+                name: 'Lily'
+            }]
+        });
+    </script>
+</body>
+</html>

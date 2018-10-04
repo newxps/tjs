@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./asset/style.css">
+</head>
+<body>
+    <div>注释</div>
+    <fieldset>
+        <legend>模板</legend>
+        <textarea id="tpl" disabled><!-- html注释 -->
+// 你好
+<%
+    // 这才是注释! <%😇%>
+
+    /**
+     * 多行注释 <%😎%>, tjs正常解析, ejs报错
+     */
+    
+    var str = 'abcd';
+%>
+<%//注释3
+%>
+<%/*注释4*/%>
+<%-str%></textarea>
+    </fieldset>
+    <fieldset>
+        <legend>使用</legend>
+        <textarea disabled>
+var render = tjs(tpl);
+render();</textarea>
+    </fieldset>
+    <fieldset>
+        <legend>输出</legend>
+        <textarea id="output" disabled></textarea>
+    </fieldset>
+    <footer>
+        <a href="index.html">测试列表</a>
+    </footer>
+    <script src="./asset/help.js"></script>
+    <script src="../lib/tjs.min.js"></script>
+    <script>
+        var tpl = document.getElementById('tpl').value;
+        var render = tjs(tpl);
+
+        document.getElementById('output').value = render();
+    </script>
+</body>
+</html>
