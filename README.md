@@ -14,7 +14,7 @@
 ### 特性
 * 根据 **js** 视图逻辑生成html
 * 支持自定义分隔符, 默认 `<%%>`
-* 单引号/双引号/反引号/正则表达式中包含分隔符会自动识别并忽略, 例如`<%var str = 'this is a <%test%>'%>` 😄
+* `单引号/双引号/反引号/正则表达式` 中包含分隔符会自动识别并忽略, 例如 `<%var str = 'this is a <%test%>'%>` 😊
 
 ### 安装
 ``` bash
@@ -52,7 +52,7 @@ render({
   <div>Jack</div>
 ```
 
-[更多例子](flfwzgl.github.io/tjs/test)
+[更多例子](https://flfwzgl.github.io/tjs/test)
 
 ### 许可
 MIT
