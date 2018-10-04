@@ -5,7 +5,9 @@
 模板引擎
 
 
-[demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
+[在线demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
+
+[测试用例](https://flfwzgl.github.io/tjs/test)
 
 <p align="center">
   <img src="test/asset/tjs.gif" alt="flow" width="600"/>
@@ -51,8 +53,6 @@ render({
 
   <div>Jack</div>
 ```
-
-[更多例子](https://flfwzgl.github.io/tjs/test)
 
 ### 许可
 MIT
