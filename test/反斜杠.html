@@ -12,7 +12,7 @@
     <div>反斜杠</div>
     <fieldset>
         <legend>模板 tpl</legend>
-        <textarea id="tpl" disabled>
+        <textarea id="tpl">
 <%
     var str = '今天是\个\好日子'
     var name = 'Tom'
@@ -23,12 +23,12 @@
     </fieldset>
     <fieldset>
         <legend>使用</legend>
-        <textarea disabled>var render = tjs(tpl);
+        <textarea>var render = tjs(tpl);
 render();</textarea>
     </fieldset>
     <fieldset>
         <legend>输出</legend>
-        <textarea id="output" disabled></textarea>
+        <textarea id="output"></textarea>
     </fieldset>
     <footer>
         <a href="index.html">测试列表</a>

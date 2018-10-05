@@ -12,12 +12,12 @@
     <div>xss防范</div>
     <fieldset>
         <legend>模板 tpl</legend>
-        <textarea id="tpl" disabled><%-a%>
+        <textarea id="tpl"><%-a%>
 <%=b%></textarea>
     </fieldset>
     <fieldset>
         <legend>使用</legend>
-        <textarea disabled>
+        <textarea>
 var render = tjs(tpl);
 render({
     a: '<div>test a</div>',

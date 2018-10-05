@@ -12,14 +12,14 @@
     <div>自定义分隔符</div>
     <fieldset>
         <legend>模板 tpl</legend>
-        <textarea id="tpl" disabled><h2><?php=title?></h2>
+        <textarea id="tpl"><h2><?php=title?></h2>
 <?phpfor (var i = 0; i < 5; i++) {?>
   <?php=i?>
 <?php}</textarea>
     </fieldset>
     <fieldset>
         <legend>使用</legend>
-        <textarea disabled>
+        <textarea>
 var render = tjs(tpl, {
     open: '<?php',
     close: '?>'
@@ -30,7 +30,7 @@ render({
     </fieldset>
     <fieldset>
         <legend>输出</legend>
-        <textarea id="output" disabled></textarea>
+        <textarea id="output"></textarea>
     </fieldset>
     <footer>
         <a href="index.html">测试列表</a>

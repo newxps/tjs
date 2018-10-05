@@ -12,7 +12,7 @@
     <div>引号</div>
     <fieldset>
         <legend>模板 tpl</legend>
-        <textarea id="tpl" disabled>
+        <textarea id="tpl">
 <%
     // tjs解析时正常识别引号中的分隔符😊,  ejs则会报错
     var a = '包含<%分隔符%>时';
@@ -34,13 +34,13 @@
     </fieldset>
     <fieldset>
         <legend>使用</legend>
-        <textarea disabled>
+        <textarea>
 var render = tjs(tpl);
 render();</textarea>
     </fieldset>
     <fieldset>
         <legend>输出</legend>
-        <textarea id="output" disabled></textarea>
+        <textarea id="output"></textarea>
     </fieldset>
     <footer>
         <a href="index.html">测试列表</a>
