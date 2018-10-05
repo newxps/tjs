@@ -4,10 +4,9 @@
 
 模板引擎
 
+[测试例子](https://flfwzgl.github.io/tjs/test)
 
 [在线demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
-
-[测试例子](https://flfwzgl.github.io/tjs/test)
 
 <p align="center">
   <img src="test/asset/tjs.gif" alt="flow" width="600"/>
@@ -24,7 +23,7 @@ $ npm i node-tjs
 ```
 或者直接引入
 ``` html
-<script src="tjs.min.js"></script>
+<script src="https://flfwzgl.github.io/tjs/lib/tjs.min.js"></script>
 ```
 
 ### 例子
@@ -65,10 +64,9 @@ MIT
 
 html template engine
 
-[demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
-
 [test examples](https://flfwzgl.github.io/tjs/test)
 
+[demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
 
 # Fetures
 * generate html with javascript logic
@@ -81,7 +79,7 @@ npm i node-tjs
 ```
 or include directly
 ``` javascript
-<script src="tjs.min.js"></script>
+<script src="https://flfwzgl.github.io/tjs/lib/tjs.min.js"></script>
 ```
 
 
