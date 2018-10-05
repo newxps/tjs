@@ -71,8 +71,8 @@ html template engine
 
 
 # Fetures
-* generating html by javascript logic
-* custom separator, default `<%%>`
+* generate html with javascript logic
+* customizable separator, default `<%%>`
 * separator in `single quote/double quote/backquote/regular expression` can be recognized automatically, such as `<%var str = 'this is a <%test%>'%>` 😊
 
 # Installation
