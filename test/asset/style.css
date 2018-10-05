@@ -1,5 +1,5 @@
 fieldset {
-	width: 800px;
+	max-width: 800px;
 	font-size: 14px;
 	color: #666;
 	border: 1px solid #ccc;
