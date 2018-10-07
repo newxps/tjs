@@ -9,7 +9,7 @@
 [在线demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
 
 <p align="center">
-  <img src="test/asset/tjs.gif" alt="flow" width="600"/>
+  <img src="test/asset/tjs.2x.gif" alt="flow" width="600"/>
 </p>
 
 ### 特性
