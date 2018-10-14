@@ -15,15 +15,21 @@
         <textarea id="tpl">
 var reg = /^1\d{10}$/
 <%
-    // 正则表达式中出现分隔符?     tjs正常解析😄, ejs则会报错
+    // 正则表达式中出现分隔符? tjs正常解析😄, ejs则会报错
     var re = /^[\u4e00-\u9fa5]+<%分隔符%>$/
-    var re2 = /2+3/+2/3/4;
-    var re3 = /2+3/;
+    
+    function getParam (name, url) {
+        var reg = new RegExp('[?&]' + name + '=([^?&#]*)');
+        var tmp = (url || location.href).match(reg);
+        return tmp && tmp[1] || '';
+    }
 %>
-<%=re.test('你<%分隔符%>')%>
-<%=re2%>
-<%=re3.test('2223')%>
-</textarea>
+
+<%-re.test('你<%分隔符%>')%>
+<%-/2+3/+2/3/4%>
+<%-/2+3/.test('2223')%>
+<%/2"3+'"/gi%>
+<%-getParam('enc', 'https://search.jd.com/search?keyword=x&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&ev=exbrand_Apple%5E&uc=0#J_searchWrap')%></textarea>
     </fieldset>
     <fieldset>
         <legend>使用</legend>

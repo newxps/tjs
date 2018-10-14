@@ -1,6 +1,6 @@
 {
   "name": "node-tjs",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "html templates engine",
   "main": "lib/tjs.js",
   "directories": {

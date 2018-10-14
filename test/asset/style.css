@@ -34,6 +34,7 @@ textarea {
 	padding: 0;
 	display: block;
 	font-family: 'Menlo';
+	word-break: break-all;
 }
 
 textarea:focus {
