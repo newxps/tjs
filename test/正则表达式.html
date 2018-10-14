@@ -16,6 +16,7 @@
 var reg = /^1\d{10}$/
 <%
     // 正则表达式中出现分隔符? tjs正常解析😄, ejs则会报错
+    // 可以copy这段代码到 ejs2 运行一下 https://ionicabizau.github.io/ejs-playground/
     var re = /^[\u4e00-\u9fa5]+<%分隔符%>$/
     
     function getParam (name, url) {
@@ -25,11 +26,16 @@ var reg = /^1\d{10}$/
     }
 %>
 
-<%-re.test('你<%分隔符%>')%>
-<%-/2+3/+2/3/4%>
-<%-/2+3/.test('2223')%>
-<%/2"3+'"/gi%>
-<%-getParam('enc', 'https://search.jd.com/search?keyword=x&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&ev=exbrand_Apple%5E&uc=0#J_searchWrap')%></textarea>
+1.<%-re.test('你<%分隔符%>')%>
+2.<%-/2+3/+2/3/4%>
+3.<%-(/2+3/+2)/3/4%>
+4.<%-/2+3/.test('2223')%>
+5.<%/2"3+'"/gi%>
+6.<%-void /ab"c/%>
+7.<%-typeof /ab"%>c/%>
+8.<%-typeof(  /ab"%>c/)%>
+9.<%-'test' in /ab"c/%>
+10.<%-getParam('enc', 'https://search.jd.com/search?keyword=x&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&ev=exbrand_Apple%5E&uc=0#J_searchWrap')%></textarea>
     </fieldset>
     <fieldset>
         <legend>使用</legend>
