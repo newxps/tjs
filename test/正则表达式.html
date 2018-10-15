@@ -25,6 +25,8 @@ var reg = /^1\d{10}$/
         var tmp = (url || location.href).match(reg);
         return tmp && tmp[1] || '';
     }
+
+    var atypeof = 1234
 %>
 
 1.<%-re.test('你<%分隔符%>')%>
@@ -34,13 +36,17 @@ var reg = /^1\d{10}$/
 5.<%/2"3+'"/gi%>
 6.<%-void /ab"c/%>
 7.<%-typeof /ab"%>c/%>
-8.<%typeof /ab"%>c/%>
-9.<%-typeof(  /ab"%>c/)%>
-10.<%-'test' in /ab"c/%>
-11.<%-getParam('enc', url)%>
-12.<%-delete url%>
-13.<%typeof  url === 'string' ?%>It's string<%:%>undefined<%;%>
-14.<%/abc/.test('abcd') ?%>true<%:%>false
+8.<%-atypeof / 2%>
+9.<%typeof /ab"%>c/%>
+10.<%-typeof(  /ab"%>c/)%>
+11.<%-'test' in /ab"c/%>
+12.<%-getParam('enc', url)%>
+13.<%-delete url%>
+14.<%typeof  url === 'string'?%>It's string<%:%>undefined<%;%>
+15.<%/ab"c/.test('ab"cd') ?%>true<%:%>false<%;%>
+16.<%/\d+"/.test('12"')
+    && %>'1<%-/abc/.test('abc')%>2'<%
+    || %>'34'
 </textarea>
     </fieldset>
     <fieldset>
@@ -61,7 +67,7 @@ render();</textarea>
     <script>
         var tpl = document.getElementById('tpl').value;
         var render = tjs(tpl);
-
+        
         document.getElementById('output').value = render();
     </script>
 </body>
