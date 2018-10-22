@@ -16,6 +16,12 @@
 * 根据 **js** 视图逻辑生成html
 * 支持自定义分隔符, 默认 `<%%>`
 * `单引号/双引号/反引号/正则表达式` 中包含分隔符会自动识别并忽略, 例如 `<%var str = 'this is a <%test%>'%>` 😊
+* 在保证 __无错误__ 的情况下具有极高的转换性能, [jsperf-模板性能测试](https://jsperf.com/template-engines-benchmark)
+* 精准的错误定位, 如下图 ⬇︎
+
+<p align="center">
+  <img src="test/asset/debug.2x.png" alt="debug" width="600"/>
+</p>
 
 ### 安装
 ``` bash
