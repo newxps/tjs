@@ -2,59 +2,59 @@
 // pageNum ---> 总页数
 // curPage ---> 当前页数
 if(+pageNum > 1) {
-	var c = +curPage;
-	var m = +pageNum;
-	c = Math.max(Math.min(c, m), 1)
-	//当前页左边区域
-	var l = Math.max(c - 4, 1); 
-	var r = Math.min(c + 4, m);
+  var c = +curPage;
+  var m = +pageNum;
+  c = Math.max(Math.min(c, m), 1)
+  //当前页左边区域
+  var l = Math.max(c - 4, 1); 
+  var r = Math.min(c + 4, m);
 %>
-	<div class="col-md-offset-5 col-md-7 col-sm-12">
-		<ul class="pages <%=className || ''%>">
-			<%
-				if(c > 1) {
-					%>
-						<li data-page="<%=Math.max(c - 5, 1)%>" class="prev"><%='<'%></li>
-					<%
-				}
-				if(l > 1) {
-					%>
-						<li data-page="1">1</li>
-					<%
+  <div class="col-md-offset-5 col-md-7 col-sm-12">
+    <ul class="pages <%=className || ''%>">
+      <%
+        if(c > 1) {
+          %>
+            <li data-page="<%=Math.max(c - 5, 1)%>" class="prev"><%='<'%></li>
+          <%
+        }
+        if(l > 1) {
+          %>
+            <li data-page="1">1</li>
+          <%
 
-					if (l > 2) {
-						%>
-							<li class="disabled">...</li>
-						<%
-					}
-				}
-				for(var i = l; i <= r; i++) {
-					if (i === c) {
-						%>
-							<li class="active"><%=1c%></li>
-						<%
-					} else {
-						%>
-							<li data-page="<%=i%>"><%=i%></li>
-						<%
-					}
-				}
-				if(r < m) {
-					if (r < m - 1) {
-						%>
-							<li class="disabled">...</li>
-						<%
-					}
-					%>
-						<li data-page="<%=m%>" class="<%=i===c ? 'active' : ''%>"><%=m%></li>
-					<%
-				}
-				if(c < m) {
-					%>
-						<li data-page="<%=Math.min(c + 5, m)%>" class="next"><%='>'%></li>
-					<%
-				}
-			%>
-		</ul>
-	</div>
+          if (l > 2) {
+            %>
+              <li class="disabled">...</li>
+            <%
+          }
+        }
+        for(var i = l; i <= r; i++) {
+          if (i === c) {
+            %>
+              <li class="active"><%=1c%></li>
+            <%
+          } else {
+            %>
+              <li data-page="<%=i%>"><%=i%></li>
+            <%
+          }
+        }
+        if(r < m) {
+          if (r < m - 1) {
+            %>
+              <li class="disabled">...</li>
+            <%
+          }
+          %>
+            <li data-page="<%=m%>" class="<%=i===c ? 'active' : ''%>"><%=m%></li>
+          <%
+        }
+        if(c < m) {
+          %>
+            <li data-page="<%=Math.min(c + 5, m)%>" class="next"><%='>'%></li>
+          <%
+        }
+      %>
+    </ul>
+  </div>
 <%}%>

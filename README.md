@@ -20,7 +20,7 @@
 * 精准的错误定位, 如下图 ⬇︎
 
 <p align="center">
-  <img src="test/asset/debug.2x.png" alt="debug" width="600"/>
+  <img src="test/asset/debug.2x.png" alt="debug" width="450"/>
 </p>
 
 ### 安装
