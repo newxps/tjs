@@ -5,7 +5,7 @@
  */
 
 
-ejs = (function(){
+;ejs = (function(){
 
 // CommonJS require()
 
