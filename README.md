@@ -9,7 +9,7 @@
 [在线demo](https://demo.fanlinfeng.com/tjs---%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E)
 
 <p align="center">
-  <img src="test/asset/tjs.2x.gif" alt="flow" width="600"/>
+  <img src="examples/asset/tjs.2x.gif" alt="flow" width="600"/>
 </p>
 
 ### 特性
@@ -20,7 +20,7 @@
 * 错误定位, 如下图 ⬇︎
 
 <p align="center">
-  <img src="test/asset/debug.2x.png" alt="debug" width="450"/>
+  <img src="examples/asset/debug.2x.png" alt="debug" width="450"/>
 </p>
 
 
@@ -37,7 +37,7 @@
 测试结果如图所示 ⬇︎
 <p align="center">
   <a href="https://jsperf.com/template-engines-benchmark/18" target="_blank">
-    <img src="test/asset/benchmark.2x.png" alt="benchmark" width="550"/>
+    <img src="examples/asset/benchmark.2x.png" alt="benchmark" width="550"/>
   </a>
 </p>
 
