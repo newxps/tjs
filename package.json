@@ -1,20 +1,20 @@
 {
   "name": "node-tjs",
-  "version": "1.3.4",
-  "description": "html templates engine",
+  "version": "1.3.5",
+  "description": "html template engine",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/flfwzgl/tjs.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["template", "javascript-embled template"],
+  "author": "flfwzgl",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/flfwzgl/tjs/issues"
@@ -23,5 +23,8 @@
   "dependencies": {
     "@babel/code-frame": "7.0.0",
     "acorn": "6.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4"
   }
 }
