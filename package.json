@@ -22,7 +22,7 @@
   "homepage": "https://github.com/flfwzgl/tjs/blob/master/README.md",
   "dependencies": {
     "@babel/code-frame": "7.0.0",
-    "acorn": "6.0.2"
+    "acorn": "6.4.1"
   },
   "devDependencies": {
     "mocha": "^6.1.4"
